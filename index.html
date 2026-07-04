@@ -187,6 +187,58 @@
             }
         }
 
+
+        /* ===== Print / Save PDF document mode ===== */
+        #print-report {
+            display: none;
+            color: #111827;
+            background: #ffffff;
+            font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+        }
+
+        @media print {
+            @page { size: A4; margin: 10mm; }
+
+            html, body {
+                background: #ffffff !important;
+                color: #111827 !important;
+                overflow: visible !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            body.printing-report > header,
+            body.printing-report > main,
+            body.printing-report > footer,
+            body.printing-report #toast-container {
+                display: none !important;
+            }
+
+            body.printing-report #print-report {
+                display: block !important;
+                width: 100% !important;
+                max-width: 190mm !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                color: #111827 !important;
+            }
+
+            body.printing-report #print-report * {
+                color: #111827 !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            .print-page-break {
+                page-break-before: always;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col antialiased">
@@ -205,15 +257,16 @@
     <!-- Header Section -->
     <header class="bg-solarNavy border-b border-solarSlate/30 px-4 py-4 lg:px-8 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 shrink-0 shadow-xl relative z-10">
         <div class="flex items-center gap-4">
-            <div class="bg-gradient-to-tr from-solarYellow to-solarTeal p-3 rounded-2xl shadow-glowTeal flex items-center justify-center">
-                <i class="fa-solid fa-solar-panel text-solarDark text-2xl"></i>
+            <div class="w-20 h-20 lg:w-24 lg:h-24 bg-white p-2 rounded-2xl shadow-glowTeal flex items-center justify-center overflow-hidden border border-solarSlate/20 shrink-0">
+                <img src="data:image/png;base64,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" alt="A SOLAR Logo" class="w-full h-full object-contain">
             </div>
             <div>
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-2.5 flex-wrap">
                     <h1 class="text-xl font-extrabold tracking-tight text-white">A SOLAR Dashboard</h1>
                     <span class="text-xs bg-solarTeal/10 text-solarTeal border border-solarTeal/20 px-2.5 py-0.5 rounded-full font-mono-custom font-bold">Pro</span>
                 </div>
-                <p class="text-sm text-slate-400 font-medium tracking-wide">A Solar Corporation Co., Ltd.</p>
+                <p class="text-sm text-slate-300 font-medium tracking-wide">A Solar Corporation Co., Ltd.</p>
+                <p class="text-xs text-slate-400 mt-1 max-w-xl leading-relaxed">เลขที่ 3/16 หมู่ที่ 1 ตำบลบ้านปทุม อำเภอสามโคก จังหวัดปทุมธานี 12160</p>
             </div>
         </div>
  
@@ -257,6 +310,9 @@
             </button>
             <button id="tab-simulation" onclick="switchTab('simulation')" class="px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 text-slate-400 hover:text-slate-100 flex items-center gap-2 whitespace-nowrap">
                 <i class="fa-solid fa-gears"></i> ข้อมูลจำเพาะ
+            </button>
+            <button onclick="printSolarReport()" class="no-print px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-solarTeal text-solarDark hover:bg-emerald-400 whitespace-nowrap shadow-glowTeal">
+                <i class="fa-solid fa-print"></i> Print / PDF
             </button>
         </nav>
     </header>
@@ -1175,6 +1231,86 @@
         </div>
     </main>
  
+
+    <!-- Print-only A4 report. This section is hidden on screen and shown only when pressing Print / PDF. -->
+    <section id="print-report" aria-hidden="true">
+        <div style="border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 14px; display: flex; justify-content: space-between; gap: 16px; align-items: flex-start;">
+            <div style="display:flex; gap:14px; align-items:flex-start;">
+                <div style="width:88px; min-width:88px; background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:6px;">
+                    <img src="data:image/png;base64,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" alt="A SOLAR Logo" style="width:100%; height:auto; display:block;">
+                </div>
+                <div>
+                    <h1 style="font-size: 22px; font-weight: 800; margin: 0 0 4px;">ใบประเมินระบบ Solar Rooftop</h1>
+                    <p style="font-size: 13px; margin: 0; font-weight:700;">A Solar Corporation Co., Ltd.</p>
+                    <p style="font-size: 12px; margin: 4px 0 0; line-height:1.5;">ที่อยู่: เลขที่ 3/16 หมู่ที่ 1 ตำบลบ้านปทุม อำเภอสามโคก จังหวัดปทุมธานี 12160</p>
+                    <p style="font-size: 12px; margin: 2px 0 0;">โทร. 02-108-8599 | Line: @asolar</p>
+                </div>
+            </div>
+            <div style="text-align: right; font-size: 12px; line-height: 1.5;">
+                <strong>วันที่ออกเอกสาร</strong><br>
+                <span id="print-date">-</span>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px;">
+            <tbody>
+                <tr>
+                    <td style="border:1px solid #d1d5db; padding:8px; width:25%; background:#f3f4f6; font-weight:700;">ชื่อลูกค้า / โครงการ</td>
+                    <td style="border:1px solid #d1d5db; padding:8px;" id="print-customer">-</td>
+                    <td style="border:1px solid #d1d5db; padding:8px; width:20%; background:#f3f4f6; font-weight:700;">พื้นที่ติดตั้ง</td>
+                    <td style="border:1px solid #d1d5db; padding:8px;" id="print-location">-</td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #d1d5db; padding:8px; background:#f3f4f6; font-weight:700;">ผู้ดูแลโครงการ</td>
+                    <td style="border:1px solid #d1d5db; padding:8px;" id="print-sales">Naveeya Deeprasertvit</td>
+                    <td style="border:1px solid #d1d5db; padding:8px; background:#f3f4f6; font-weight:700;">อ้างอิง</td>
+                    <td style="border:1px solid #d1d5db; padding:8px;" id="print-ref">A SOLAR Dashboard</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 style="font-size: 15px; font-weight: 800; margin: 14px 0 8px;">1. สรุปผลการประเมิน</h2>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px;">
+            <thead>
+                <tr style="background:#111827; color:#ffffff;">
+                    <th style="border:1px solid #111827; padding:8px; text-align:left; color:#ffffff !important;">รายการ</th>
+                    <th style="border:1px solid #111827; padding:8px; text-align:right; color:#ffffff !important;">ผลการคำนวณ</th>
+                    <th style="border:1px solid #111827; padding:8px; text-align:left; color:#ffffff !important;">หมายเหตุ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td style="border:1px solid #d1d5db; padding:8px;">ขนาดระบบที่แนะนำ</td><td style="border:1px solid #d1d5db; padding:8px; text-align:right; font-weight:700;" id="print-size">-</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-panels">-</td></tr>
+                <tr><td style="border:1px solid #d1d5db; padding:8px;">งบประมาณลงทุนสุทธิ</td><td style="border:1px solid #d1d5db; padding:8px; text-align:right; font-weight:700;" id="print-budget">-</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-cost-rate">-</td></tr>
+                <tr><td style="border:1px solid #d1d5db; padding:8px;">ลดบิลค่าไฟโดยประมาณ</td><td style="border:1px solid #d1d5db; padding:8px; text-align:right; font-weight:700;" id="print-savings">-</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-monthly-saving">-</td></tr>
+                <tr><td style="border:1px solid #d1d5db; padding:8px;">ระยะเวลาคืนทุนโดยประมาณ</td><td style="border:1px solid #d1d5db; padding:8px; text-align:right; font-weight:700;" id="print-roi">-</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-roi-index">-</td></tr>
+            </tbody>
+        </table>
+
+        <h2 style="font-size: 15px; font-weight: 800; margin: 14px 0 8px;">2. ข้อมูลจำเพาะเบื้องต้น</h2>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px;">
+            <tbody>
+                <tr><td style="border:1px solid #d1d5db; padding:8px; background:#f3f4f6; font-weight:700; width:32%;">ชนิด/ขนาดแผง</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-panel-spec">-</td></tr>
+                <tr><td style="border:1px solid #d1d5db; padding:8px; background:#f3f4f6; font-weight:700;">Inverter</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-inverter-spec">-</td></tr>
+                <tr><td style="border:1px solid #d1d5db; padding:8px; background:#f3f4f6; font-weight:700;">ข้อมูลการใช้ไฟ</td><td style="border:1px solid #d1d5db; padding:8px;" id="print-energy-info">-</td></tr>
+            </tbody>
+        </table>
+
+        <div style="font-size: 11px; line-height: 1.65; border: 1px solid #d1d5db; padding: 10px; background:#f9fafb; margin-top: 10px;">
+            <strong>หมายเหตุ:</strong> เอกสารนี้เป็นการประเมินเบื้องต้นจากข้อมูลที่กรอกในระบบ Dashboard ผลลัพธ์จริงอาจเปลี่ยนแปลงตามหน้างานจริง ทิศทางหลังคา เงาบัง ระยะสายไฟ อุปกรณ์ที่เลือกใช้ และเงื่อนไขของการไฟฟ้า
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; font-size: 12px;">
+            <div style="text-align:center;">
+                <div style="border-bottom:1px solid #111827; height:42px; margin-bottom:8px;"></div>
+                ผู้จัดทำ / ผู้เสนอราคา
+            </div>
+            <div style="text-align:center;">
+                <div style="border-bottom:1px solid #111827; height:42px; margin-bottom:8px;"></div>
+                ผู้รับทราบ / ลูกค้า
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-solarNavy border-t border-solarSlate/20 py-6 px-8 text-slate-500 text-sm mt-8">
         <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <p>© 2026 A Solar Corporation Company Limited. Designed & Structured for Elite Yield Analysis.</p>
@@ -1969,6 +2105,73 @@
             }
         }
         function jumpToHour(h) { onTimelineSliderChange(h); }
+
+
+        // ===== Print / Save PDF Report =====
+        function getCleanText(selector, fallback = '-') {
+            const el = document.querySelector(selector);
+            if (!el) return fallback;
+            return (el.innerText || el.textContent || fallback).replace(/\s+/g, ' ').trim() || fallback;
+        }
+
+        function getSelectText(id, fallback = '-') {
+            const el = document.getElementById(id);
+            if (!el) return fallback;
+            if (el.options && el.selectedIndex >= 0) return el.options[el.selectedIndex].text.trim();
+            return el.value || fallback;
+        }
+
+        function setPrintText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value || '-';
+        }
+
+        function buildSolarPrintReport() {
+            const now = new Date();
+            const dateText = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+            let customerName = localStorage.getItem('asolar_last_customer_name') || '';
+            customerName = prompt('ใส่ชื่อลูกค้า/ชื่อโครงการ สำหรับเอกสาร PDF', customerName || '');
+            if (customerName === null) return false;
+            customerName = customerName.trim() || '-';
+            localStorage.setItem('asolar_last_customer_name', customerName === '-' ? '' : customerName);
+
+            const province = getSelectText('param-project-province', getCleanText('#location-name-label'));
+            const panelBrand = getSelectText('param-panel-brand', '-');
+            const panelWatt = document.getElementById('fin-input-watts')?.value || document.getElementById('param-panel-type')?.value || '-';
+            const inverterBrand = getSelectText('param-inverter-brand', '-');
+            const inverterQty = document.getElementById('param-inverter-qty')?.value || '-';
+            const inverterSize = document.getElementById('param-inverter-size')?.value || '-';
+            const monthlyUnit = document.getElementById('install-monthly-unit')?.value || getCleanText('#appl-total-monthly', '-');
+            const dayRatio = document.getElementById('install-day-ratio-val')?.innerText || document.getElementById('day-ratio-val')?.innerText || '-';
+
+            setPrintText('print-date', dateText);
+            setPrintText('print-customer', customerName);
+            setPrintText('print-location', province);
+            setPrintText('print-size', getCleanText('.card-size'));
+            setPrintText('print-panels', getCleanText('.card-panels-info'));
+            setPrintText('print-budget', getCleanText('.card-budget'));
+            setPrintText('print-cost-rate', getCleanText('.card-cost-per-watt'));
+            setPrintText('print-savings', getCleanText('.card-savings'));
+            setPrintText('print-monthly-saving', getCleanText('.card-avg-monthly'));
+            setPrintText('print-roi', getCleanText('.card-roi'));
+            setPrintText('print-roi-index', getCleanText('.card-timeline-status'));
+            setPrintText('print-panel-spec', `${panelBrand} / ${panelWatt} W ต่อแผง`);
+            setPrintText('print-inverter-spec', `${inverterBrand} จำนวน ${inverterQty} เครื่อง x ${inverterSize} kW`);
+            setPrintText('print-energy-info', `หน่วยไฟเฉลี่ย ${monthlyUnit} kWh/เดือน, สัดส่วนการใช้ไฟกลางวัน ${dayRatio}`);
+            return true;
+        }
+
+        function printSolarReport() {
+            if (!buildSolarPrintReport()) return;
+            document.body.classList.add('printing-report');
+            const cleanup = () => document.body.classList.remove('printing-report');
+            window.onafterprint = cleanup;
+            setTimeout(() => {
+                window.print();
+                setTimeout(cleanup, 1000);
+            }, 150);
+        }
+
     </script>
 </body>
 </html>
